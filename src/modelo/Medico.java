@@ -28,9 +28,18 @@ public class Medico extends Empleado{
     public int getNumeroPacientesAtendidos() { return numeroPacientesAtendidos; }
     public double getValorConsulta() { return valorConsulta; }
 
+    @Override
     public double calcularPago(){
         return getNumeroPacientesAtendidos() * getValorConsulta();
     }
 
+    @Override
+    public void mostrarInformacion(){
+        super.mostrarInformacion();
+        System.out.println("Especialidad: "+ getEspecialidad());
+        System.out.println("Pacientes atendidos: "+ getNumeroPacientesAtendidos());
+        System.out.println("Valor consulta: $"+getValorConsulta());
+        System.out.println("Pago: $"+calcularPago());
+    }
 
 }
