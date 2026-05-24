@@ -81,16 +81,16 @@
 - Empleado con mayor ingreso
 
 src/
-├── modelo/
-│   ├── Empleado.java
-│   ├── Medico.java
-│   └── Administrativo.java
-├── servicio/
-│   └── EmpleadoServicio.java
-├── util/
-│   └── Validador.java
-└── app/
-    └── Main.java
+    modelo/
+        Empleado.java
+        Medico.java
+        Administrativo.java
+    servicio/
+        EmpleadoServicio.java
+    util/
+        Validador.java
+    app/
+        Main.java
 
 Autor
 Alejandro Aguirre
