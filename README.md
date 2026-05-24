@@ -80,18 +80,20 @@
 - Pago total administrativos
 - Empleado con mayor ingreso
 
+## Estructura de Paquetes
+```
 src/
-    modelo/
-        Empleado.java
-        Medico.java
-        Administrativo.java
-    servicio/
-        EmpleadoServicio.java
-    util/
-        Validador.java
-    app/
-        Main.java
-
+├── modelo/
+│   ├── Empleado.java
+│   ├── Medico.java
+│   └── Administrativo.java
+├── servicio/
+│   └── EmpleadoServicio.java
+├── util/
+│   └── Validador.java
+└── app/
+    └── Main.java
+```
 Autor
 Alejandro Aguirre
 
