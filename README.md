@@ -81,17 +81,21 @@
 - Empleado con mayor ingreso
 
 ## Estructura de paquetes
-src/
-├── modelo/
-│ ├── Empleado.java
-│ ├── Medico.java
-│ └── Administrativo.java
-├── servicio/
-│ └── EmpleadoServicio.java
-├── util/
-│ └── Validador.java
-└── app/
-└── Main.java
+src/ 
+│ 
+├── modelo/ 
+│   ├── Empleado.java 
+│   ├── Medico.java 
+│   └── Administrativo.java 
+│ 
+├── servicio/ 
+│   └── EmpleadoServicio.java 
+│ 
+├── util/ 
+│   └── Validador.java 
+│ 
+└── app/ 
+└── Main.java 
 
 Autor
 Alejandro Aguirre
