@@ -32,7 +32,7 @@ public class EmpleadoServicio {
         int index = -1;
         for (int i=0; i< empleados.size(); i++){
             if (empleados.get(i).getCedula().equals(cedula)){
-                index = 1;
+                index = i;
                 break;
             }
         }
