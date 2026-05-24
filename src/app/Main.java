@@ -47,7 +47,7 @@ public class Main {
     private static int leerOpcion(){
         while (true){
             try {
-                System.out.println("Opcion: ");
+                System.out.print("Opcion: ");
                 int opcion = Integer.parseInt(sc.nextLine());
                 if (opcion >= 1 && opcion <= 9) return opcion;
                 System.out.println("Error: opción inválida (1-9)");
@@ -157,6 +157,7 @@ public class Main {
         }
     }
 
+    // Opciones del crud en main:
     // RF01: Registrar médico
     private static void registrarMedico(){
         System.out.println("\n--- REGISTRAR MÉDICO ---");
@@ -171,7 +172,7 @@ public class Main {
 
         Medico medico = new Medico(cedula, nombre, edad, telefono, correo, especialidad, pacientes, valorConsulta);
         servicio.registrar(medico);
-        System.out.println("✅ Médico registrado exitosamente\n");
+        System.out.println("Médico registrado exitosamente\n");
     }
 
     // RF02: Registrar administrativo
@@ -188,7 +189,7 @@ public class Main {
 
         Administrativo admin = new Administrativo(cedula, nombre, edad, telefono, correo, departamento, horas, valorHora);
         servicio.registrar(admin);
-        System.out.println("✅ Administrativo registrado exitosamente\n");
+        System.out.println("Administrativo registrado exitosamente\n");
     }
 
     // RF03: Mostrar todos los empleados
@@ -196,7 +197,7 @@ public class Main {
         System.out.println("\n--- LISTA DE EMPLEADOS ---");
         ArrayList<Empleado> empleados = servicio.listarTodos();
         if (empleados.isEmpty()){
-            System.out.println("No hay empleados registrados\n");
+            System.out.println("No hay empleados registrados.\n");
             return;
         }
         for (Empleado e : empleados){
@@ -209,6 +210,10 @@ public class Main {
     // RF04: Buscar por cédula
     private static void buscarPorCedula(){
         System.out.println("\n--- BUSCAR EMPLEADO ---");
+        if (servicio.listarTodos().isEmpty()){
+            System.out.println("No hay empleados registrados.\n");
+            return;
+        }
         String cedula = leerCedulaExistente("Cédula a buscar: ");
         Empleado e = servicio.buscarPorCedula(cedula);
         System.out.println("─────────────────────────");
@@ -216,5 +221,136 @@ public class Main {
         System.out.println("─────────────────────────\n");
     }
 
+    // RF05: Reemplazar información
+    private static void reemplazarInformacion(){
+        System.out.println("\n--- REEMPLAZAR EMPLEADO ---");
+        if (servicio.listarTodos().isEmpty()){
+            System.out.println("No hay empleados registrados.\n");
+            return;
+        }
+        String cedula = leerCedulaExistente("Cédula del empleado a reemplazar: ");
+        Empleado existente = servicio.buscarPorCedula(cedula);
 
+        System.out.println("\nDatos actuales:");
+        System.out.println("─────────────────────────");
+        existente.mostrarInformacion();
+        System.out.println("─────────────────────────");
+
+        System.out.println("\nIngrese los nuevos datos:");
+
+        String nombre = leerStringNoVacio("Nuevo nombre: ");
+        int edad = leerEdad();
+        String telefono = leerTelefono();
+        String correo = leerCorreo();
+
+        Empleado nuevo;
+
+        if (existente instanceof Medico){
+            Medico m = (Medico) existente;
+            String especialidad = leerStringNoVacio("Nueva especialidad: ");
+            int pacientes = leerEnteroPositivo("Nuevo número de pacientes: ");
+            double valorConsulta = leerDoublePositivo("Nuevo valor por consulta: $");
+            nuevo = new Medico(cedula, nombre, edad, telefono, correo, especialidad, pacientes, valorConsulta);
+        } else {
+            Administrativo a = (Administrativo) existente;
+            String departamento = leerStringNoVacio("Nuevo departamento: ");
+            int horas = leerEnteroPositivo("Nuevas horas trabajadas: ");
+            double valorHora = leerDoublePositivo("Nuevo valor por hora: $");
+            nuevo = new Administrativo(cedula, nombre, edad, telefono, correo, departamento, horas, valorHora);
+        }
+
+        if (servicio.reemplazar(cedula, nuevo)){
+            System.out.println("Información reemplazada exitosamente\n");
+        } else {
+            System.out.println("Error al reemplazar\n");
+        }
+    }
+
+    // RF06: Eliminar registro
+    private static void eliminarRegistro(){
+        System.out.println("\n--- ELIMINAR EMPLEADO ---");
+        if (servicio.listarTodos().isEmpty()){
+            System.out.println("No hay empleados registrados.\n");
+            return;
+        }
+        String cedula = leerCedulaExistente("Cédula del empleado a eliminar: ");
+        Empleado e = servicio.buscarPorCedula(cedula);
+        System.out.println("─────────────────────────");
+        e.mostrarInformacion();
+        System.out.println("─────────────────────────");
+
+        if (servicio.eliminarPorCedula(cedula)){
+            System.out.println("Empleado eliminado exitosamente\n");
+        } else {
+            System.out.println("Error al eliminar\n");
+        }
+    }
+
+    // RF07: Calcular pagos (mostrar todos los pagos)
+    private static void calcularPagos(){
+        System.out.println("\n--- CÁLCULO DE PAGOS ---");
+        ArrayList<Empleado> empleados = servicio.listarTodos();
+        if (empleados.isEmpty()){
+            System.out.println("No hay empleados registrados.\n");
+            return;
+        }
+        double totalGeneral = 0;
+        for (Empleado e : empleados){
+            System.out.println("─────────────────────────");
+            System.out.println("Nombre: " + e.getNombre());
+            System.out.println("Cédula: " + e.getCedula());
+            double pago = e.calcularPago();
+            System.out.println("Pago: $" + pago);
+            totalGeneral += pago;
+        }
+        System.out.println("─────────────────────────");
+        System.out.println("TOTAL GENERAL A PAGAR: $" + totalGeneral);
+        System.out.println();
+    }
+
+    // RF08: Mostrar estadísticas
+    private static void mostrarEstadisticas(){
+        System.out.println("\n--- ESTADÍSTICAS ---");
+        ArrayList<Empleado> empleados = servicio.listarTodos();
+
+        if (empleados.isEmpty()){
+            System.out.println("No hay empleados registrados.\n");
+            return;
+        }
+
+        int totalMedicos = 0;
+        int totalAdministrativos = 0;
+        double totalPagoMedicos = 0;
+        double totalPagoAdministrativos = 0;
+        Empleado mayorIngreso = null;
+        double mayorPago = -1;
+
+        for (Empleado e : empleados){
+            double pago = e.calcularPago();
+
+            if (e instanceof Medico){
+                totalMedicos++;
+                totalPagoMedicos += pago;
+            } else {
+                totalAdministrativos++;
+                totalPagoAdministrativos += pago;
+            }
+
+            if (pago > mayorPago){
+                mayorPago = pago;
+                mayorIngreso = e;
+            }
+        }
+
+        System.out.println("Total médicos: " + totalMedicos);
+        System.out.println("Total administrativos: " + totalAdministrativos);
+        System.out.println("Total empleados: " + empleados.size());
+        System.out.println("Pago total médicos: $" + totalPagoMedicos);
+        System.out.println("Pago total administrativos: $" + totalPagoAdministrativos);
+
+        if (mayorIngreso != null){
+            System.out.println("Empleado con mayor ingreso: " + mayorIngreso.getNombre() + " - $" + mayorPago);
+        }
+        System.out.println();
+    }
 }
